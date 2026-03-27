@@ -19,69 +19,75 @@
   <main class="portal-content">
 
     <!-- ESTADO 1: BUSCA -->
-    <section class="search-section" *ngIf="!processedContent() && !isLoading()">
-      <div class="hero-msg">
-        <h1>Inteligência Genômica e de Campo</h1>
-        <p>Consulte nossa biblioteca técnica para extrair evidências, compostos e claims biotecnológicos.</p>
-      </div>
-
-      <div class="search-command-box">
-        <textarea
-          [ngModel]="inputText()"
-          (ngModelChange)="inputText.set($event)"
-          placeholder="O que você deseja investigar? Ex: Identifique bio-indicadores de resistência térmica em sementes de soja..."
-          (keydown.enter)="processData(); $event.preventDefault()">
-        </textarea>
-
-        <div class="command-actions">
-          <small>Pressione Enter para iniciar a varredura na base de dados ↵</small>
-          <button class="btn-scan" (click)="processData()" [disabled]="!inputText()">
-            Varrer Conhecimento
-          </button>
+    @if (!processedContent() && !isLoading()) {
+      <section class="search-section">
+        <div class="hero-msg">
+          <h1>Inteligência Genômica e de Campo</h1>
+          <p>Consulte nossa biblioteca técnica para extrair evidências, compostos e claims biotecnológicos.</p>
         </div>
-      </div>
-    </section>
+        <div class="search-command-box">
+          <textarea
+            [ngModel]="inputText()"
+            (ngModelChange)="inputText.set($event)"
+            placeholder="O que você deseja investigar? Ex: Identifique bio-indicadores de resistência térmica em sementes de soja..."
+            (keydown.enter)="processData(); $event.preventDefault()">
+          </textarea>
+          <div class="command-actions">
+            <small>Pressione Enter para iniciar a varredura na base de dados ↵</small>
+            <button class="btn-scan" (click)="processData()" [disabled]="!inputText()">
+              Varrer Conhecimento
+            </button>
+          </div>
+        </div>
+      </section>
+    }
 
     <!-- ESTADO 2: SCANNING -->
-    <section class="scanning-state" *ngIf="isLoading()">
-      <div class="scanner-container">
-        <div class="scan-line"></div>
-        <div class="biotech-helix">🧬</div>
-      </div>
-      <h2>Consultando Biblioteca Técnica SÒJJA...</h2>
-      <p>A IA está correlacionando papers e mapeando claims bio-científicos.</p>
-    </section>
+    @if (isLoading()) {
+      <section class="scanning-state">
+        <div class="scanner-container">
+          <div class="scan-line"></div>
+          <div class="biotech-helix">🧬</div>
+        </div>
+        <h2>Consultando Biblioteca Técnica SÒJJA...</h2>
+        <p>A IA está correlacionando papers e mapeando claims bio-científicos.</p>
+      </section>
+    }
 
     <!-- ESTADO 3: RESULTADOS -->
-    <section class="findings-panel" *ngIf="processedContent() && !isLoading()">
-      <div class="panel-header">
-        <button class="btn-back" (click)="reset()">
-          <span class="icon">←</span> Nova Pesquisa
-        </button>
-        <div class="query-summary">
-          <label>RESULTADOS EXTRAÍDOS PARA:</label>
-          <span class="query-text">"{{ inputText() }}"</span>
+    @if (processedContent() && !isLoading()) {
+      <section class="findings-panel">
+        <div class="panel-header">
+          <button class="btn-back" (click)="reset()">
+            <span class="icon">←</span> Nova Pesquisa
+          </button>
+          <div class="query-summary">
+            <label>RESULTADOS EXTRAÍDOS PARA:</label>
+            <span class="query-text">"{{ inputText() }}"</span>
+          </div>
         </div>
-      </div>
-
-      <!-- Layout em Grid para suportar Citações -->
-      <div class="report-layout">
-        <article class="findings-grid">
-          <div class="content-render" [innerHTML]="processedContent()"></div>
-        </article>
-
-        <!-- Sidebar de Citações -->
-        <aside class="citations-sidebar" *ngIf="citations().length > 0">
-          <div class="sidebar-label">FONTES CONSULTADAS</div>
-          <ul class="citations-list">
-            <li *ngFor="let doc of citations()">
-              <span class="doc-icon">📄</span>
-              <span class="doc-name">{{ doc }}</span>
-            </li>
-          </ul>
-        </aside>
-      </div>
-    </section>
+        <!-- Layout em Grid para suportar Citações -->
+        <div class="report-layout">
+          <article class="findings-grid">
+            <div class="content-render" [innerHTML]="processedContent()"></div>
+          </article>
+          <!-- Sidebar de Citações -->
+          @if (citations().length > 0) {
+            <aside class="citations-sidebar">
+              <div class="sidebar-label">FONTES CONSULTADAS</div>
+              <ul class="citations-list">
+                @for (doc of citations(); track doc) {
+                  <li>
+                    <span class="doc-icon">📄</span>
+                    <span class="doc-name">{{ doc }}</span>
+                  </li>
+                }
+              </ul>
+            </aside>
+          }
+        </div>
+      </section>
+    }
 
   </main>
 </div>

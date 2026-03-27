@@ -1,4 +1,4 @@
-import { CommonModule} from '@angular/common';
+
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { Component, inject, signal } from '@angular/core';
@@ -6,16 +6,18 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { RouterOutlet } from '@angular/router';
 
 import * as marked from 'marked';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-root',
-  imports: [CommonModule, FormsModule],
+  imports: [FormsModule, CommonModule],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
 export class App {
   private http = inject(HttpClient);
   private sanitizer = inject(DomSanitizer);
+
 
   inputText = signal<string>('');
   isLoading = signal<boolean>(false);
