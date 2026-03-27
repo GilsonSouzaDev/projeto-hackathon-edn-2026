@@ -1,0 +1,11 @@
+{
+  "/api-aws": {
+    "target": "https://lb34ug5vfk.execute-api.us-east-1.amazonaws.com/Dev/query",
+    "secure": true,
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/api-aws": ""
+    },
+    "logLevel": "debug"
+  }
+}
