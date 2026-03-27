@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    {
+      "source": "/api-aws/:path*",
+      "destination": "https://lb34ug5vfk.execute-api.us-east-1.amazonaws.com/Dev/query"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
